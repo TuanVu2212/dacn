@@ -7,7 +7,7 @@ export default function Categories() {
 
     const [items, setItems] = useState([]);
     // const todo = db.firestore().collection('Item_Categories');
-    console.log("yess");
+    // console.log("yess");
 
     useEffect(() => {
         const GetData = async () => {
@@ -22,10 +22,8 @@ export default function Categories() {
     return (
         <View
             style={{
-                marginTop: 5,
                 backgroundColor: "#fff",
-                paddingVertical: 10,
-                paddingLeft: 20,
+                paddingLeft: 10,
             }}
         >
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
@@ -35,7 +33,7 @@ export default function Categories() {
                             <Image
                                 source={{ uri: item.image }}
                                 style={{
-                                    width: 50,
+                                    width: 40,
                                     height: 40,
                                     resizeMode: "contain",
                                 }}

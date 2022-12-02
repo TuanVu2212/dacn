@@ -11,6 +11,8 @@ import AuthLayout from "./Authentication/AuthLayout"
 import CartTab from "./Cart/CartTab"
 import Favourite from "./Favourite/Favourite"
 import Notification from "./Notification/Notification"
+import MainLayout from "./MainLayout"
+import User from "./user/User"
 
 export {
     OnBoarding,
@@ -24,4 +26,6 @@ export {
     CartTab,
     Favourite,
     Notification,
+    MainLayout,
+    User
 }

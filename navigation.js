@@ -1,10 +1,11 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
-import { Provider as ReduxProvider } from "react-redux";
-// import configureStore from "./redux/store";
-// import OrderCompleted from "./screens/OrderCompleted";
-import BottomTabs from './components/home/BottomTabs'
+
+import { createStore, applyMiddleware } from 'redux'
+import { Provider } from "react-redux";
+import thunk from "redux-thunk"
+import rootReducer from "./components/home/store/rootReducer";
 
 // const store = configureStore();
 import {
@@ -14,8 +15,15 @@ import {
   SignIn,
   SignUp,
   ForgotPassword,
-  Otp
+  Otp,
+  MainLayout,
+  User
 } from './screens'
+
+const store = createStore(
+  rootReducer,
+  applyMiddleware(thunk)
+)
 
 export default function RootNavigation() {
   const Stack = createStackNavigator();
@@ -26,38 +34,47 @@ export default function RootNavigation() {
 
   return (
     // <ReduxProvider>
-    <NavigationContainer>
-      <Stack.Navigator
-        initialRouteName="Home"
-        screenOptions={screenOptions}
-      >
-        <Stack.Screen
-          name="Home"
-          component={Home}
-        />
-        <Stack.Screen
-          name="SignUp"
-          component={SignUp}
-        />
-        <Stack.Screen
-          name="RestaurantDetail"
-          component={RestaurantDetail}
-        />
-        <Stack.Screen
-          name="SignIn"
-          component={SignIn}
-        />
-        <Stack.Screen
-          name="OnBoarding"
-          component={OnBoarding}
-        />
-        <Stack.Screen
-          name="OTP"
-          component={Otp}
-        />
-        {/* <Stack.Screen name="OrderCompleted" component={OrderCompleted} /> */}
-      </Stack.Navigator>
-    </NavigationContainer>
-    // </ReduxProvider>
+    <Provider store={store}>
+      <NavigationContainer>
+        <Stack.Navigator
+          initialRouteName="User"
+          screenOptions={screenOptions}
+        >
+          {/* <Stack.Screen
+            name="Home"
+            component={Home}
+          /> */}
+          <Stack.Screen
+            name="MainLayout"
+            component={MainLayout}
+          />
+          <Stack.Screen
+            name="SignUp"
+            component={SignUp}
+          />
+          <Stack.Screen
+            name="RestaurantDetail"
+            component={RestaurantDetail}
+          />
+          <Stack.Screen
+            name="SignIn"
+            component={SignIn}
+          />
+          <Stack.Screen
+            name="User"
+            component={User}
+          />
+          <Stack.Screen
+            name="OnBoarding"
+            component={OnBoarding}
+          />
+          <Stack.Screen
+            name="OTP"
+            component={Otp}
+          />
+          {/* <Stack.Screen name="OrderCompleted" component={OrderCompleted} /> */}
+        </Stack.Navigator>
+      </NavigationContainer>
+    </Provider>
   );
 }

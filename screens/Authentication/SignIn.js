@@ -7,6 +7,8 @@ import FormInput from '../../components/FormInput';
 import CustomSwitch from '../../components/CustomSwitch';
 import TextIconButton from '../../components/TextIconButton';
 import { utils } from '../../utils'
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../../firebase/firebase-config';
 
 
 
@@ -16,11 +18,33 @@ export default function SignIn({ navigation }) {
     const [pass, setPass] = useState("")
     const [showpass, setShowPass] = useState(false)
     const [erroremail, setErrorEmail] = useState("")
+    const [errorpass, setErrorPass] = useState("")
     const [saveMe, setSaveMe] = useState(false)
 
     function isEnableSignIn() {
         return email != "" && pass != "" & erroremail == ""
     }
+
+    const SignIN = () => {
+        signInWithEmailAndPassword(auth, email, pass)
+            .then((userCredential) => {
+                // Signed in
+                const user = userCredential.user;
+                // ...
+                console.log('====================================');
+                console.log(user.uid);
+                console.log('====================================');
+
+                // navigation.navigate("MainLayout")
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                setErrorEmail(error.code)
+                // const errorMessage = error.message;
+                console.log("Lỗi: ", error.message);
+            });
+    }
+
     return (
         <AuthLayout
             title="Let Sign you In"
@@ -39,7 +63,8 @@ export default function SignIn({ navigation }) {
                     autoCompleteType='email'
                     onChange={(value) => {
                         //validate
-                        utils.validateEmail(value, setErrorEmail)
+                        setErrorEmail("")
+                        setErrorPass("")
                         setEmail(value)
                     }}
                     errorMsg={erroremail}
@@ -69,10 +94,11 @@ export default function SignIn({ navigation }) {
                     autoCompleteType='password'
                     onChange={(value) => {
                         //validate
-                        utils.validatePassword(value, setErrorPass)
+                        setErrorEmail("")
+                        setErrorPass("")
                         setPass(value)
                     }}
-                    // errorMsg={pass}
+                    errorMsg={errorpass}
                     appendComponent={
                         <TouchableOpacity
                             style={{
@@ -132,7 +158,9 @@ export default function SignIn({ navigation }) {
                         borderRadius: SIZES.radius,
                         backgroundColor: isEnableSignIn() ? COLORS.primary : COLORS.transparentPrimary
                     }}
-                    onPress={() => navigation.navigate("Home")}
+                    onPress={() => {
+                        SignIN()
+                    }}
                 />
                 {/* SIGNUP 58:20*/}
                 <View
@@ -185,7 +213,7 @@ export default function SignIn({ navigation }) {
                             color: COLORS.white
                         }}
                         onPress={() => {
-                            navigation.navigate("Home")
+                            navigation.navigate("MainLayout")
                             // console.log('====================================');
                             // console.log("FB");
                             // console.log('====================================');

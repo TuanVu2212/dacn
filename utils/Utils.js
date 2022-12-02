@@ -22,6 +22,13 @@ function validatePassword(value, setPasswordError) {
         setPasswordError("")
     }
 }
+function validatePhoneNumber(value, setPhoneNumberError) {
+    if (value.length < 10) {
+        setPhoneNumberError("Password must be 9 characters")
+    } else {
+        setPhoneNumberError("")
+    }
+}
 
 const utils = {
     isValidEmail,

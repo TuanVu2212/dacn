@@ -29,7 +29,7 @@ function infiniteScroll(dataList) {
 }
 
 
-const Carousel = ({ data }) => {
+const CarouselItems = ({ data }) => {
     const scrollX = new Animated.Value(0)
     let position = Animated.divide(scrollX, width)
     const [dataList, setDataList] = useState(data)
@@ -92,4 +92,4 @@ const Carousel = ({ data }) => {
 }
 
 
-export default Carousel
+export default CarouselItems

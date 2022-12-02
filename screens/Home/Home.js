@@ -1,25 +1,73 @@
-import React, { useEffect, useState } from "react";
-import { View, Text, SafeAreaView, ScrollView } from 'react-native';
-import BottomTabs from "../../components/home/BottomTabs";
-import Carousell from "../../components/home/carousel/Carousel";
-import Categories from '../../components/home/Categories';
-import HeaderTabs from '../../components/home/HeaderTabs';
-import RestaurantItems, {
-    localRestaurants,
-} from "../../components/home/RestaurantItems";
-import SearchBar from '../../components/home/SearchBar';
-
+import {
+    View,
+    Text,
+    TouchableOpacity,
+    Image,
+    TextInput,
+    FlatList
+} from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { COLORS, dummyData, FONTS, icons, SIZES } from '../../constants'
+import RestaurantDetail from './RestaurantDetail'
+import Categories from '../../components/home/Categories'
+import Carousel from "../../components/home/carousel/Carousel";
+// import from "../../components/home/carousel";
+import { ScrollView } from 'react-native'
 import { db } from "../../firebase/firebase-config";
 import { collection, getDocs } from 'firebase/firestore/lite'
 
 
 
-export default function Home({ navigation }) {
-    const [restaurantData, setRestaurantData] = useState(localRestaurants);
-    const [slide, setSlide] = useState([]);
-    // const todo = db.firestore().collection('Item_Categories');
-    console.log("yess");
 
+
+function renderSearch() {
+    return (
+        <View
+            style={{
+                flexDirection: 'row',
+                height: 40,
+                alignItems: 'center',
+                marginHorizontal: SIZES.padding,
+                marginVertical: SIZES.base * 2,
+                paddingHorizontal: SIZES.radius,
+                borderRadius: SIZES.radius,
+                backgroundColor: COLORS.lightGray2
+            }}
+        >
+            <Image
+                source={icons.search}
+                style={{
+                    height: 20,
+                    width: 20,
+                    tintColor: COLORS.black
+                }}
+            />
+            <TextInput
+                style={{
+                    flex: 1,
+                    marginLeft: SIZES.radius,
+                    ...FONTS.body3
+                }}
+                placeholder="Tìm kiếm...."
+            />
+            <TouchableOpacity
+
+            >
+                <Image
+                    source={icons.filter}
+                    style={{
+                        height: 20,
+                        width: 20,
+                        tintColor: COLORS.black
+                    }}
+                />
+            </TouchableOpacity>
+        </View>
+    )
+}
+
+export default function Home() {
+    const [slide, setSlide] = useState([]);
     useEffect(() => {
         const GetData = async () => {
             const slide_items = collection(db, 'Slide');
@@ -31,28 +79,20 @@ export default function Home({ navigation }) {
     }, []);
 
     return (
-        <SafeAreaView style={{
-            backgroundColor: "#eee",
-            flex: 1,
-        }}>
-            <View style={{
-                backgroundColor: "white",
-                padding: 15
-            }}>
-                <HeaderTabs navigation={navigation} />
-                <SearchBar />
-                <Categories />
-            </View>
+        <View
+            style={{
+                paddingTop: 20,
+                flex: 1,
+            }}
+        >
+            {renderSearch()}
+            <Categories />
             <ScrollView showsVerticalScrollIndicator={false}>
-                <Carousell data={slide} />
-
-                <RestaurantItems
-                    restaurantData={restaurantData}
-                    navigation={navigation}
-                />
+                <Carousel data={slide} />
+                <Carousel data={slide} />
+                <RestaurantDetail />
             </ScrollView>
-            {/* <ViewCart /> */}
-            <BottomTabs navigation={navigation} />
-        </SafeAreaView>
-    );
+
+        </View>
+    )
 }

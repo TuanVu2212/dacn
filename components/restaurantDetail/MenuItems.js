@@ -28,7 +28,9 @@ export default function MenuItems({
       <ScrollView showsVerticalScrollIndicator={false}>
         {foods.map((food, index) => (
           <View key={index}>
-            <View style={styles.menuItemStyle}>
+            <View style={
+              styles.menuItemStyle
+            }>
               <FoodInfo food={food} />
               <FoodImage food={food} marginLeft={marginLeft ? marginLeft : 0} />
             </View>

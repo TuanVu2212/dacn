@@ -10,6 +10,7 @@ export default function FormInput({
     prependComponent,
     appendComponent,
     onChange,
+    readonly,
     secureTextEntry,
     keyboardType = 'default',
     autoCompleteType = "off",
@@ -60,6 +61,7 @@ export default function FormInput({
                     autoCompleteType={autoCompleteType}
                     autoCapitalize={autoCapitalixe}
                     onChangeText={(text) => onChange(text)}
+                    readonly={readonly}
                 />
                 {appendComponent}
 

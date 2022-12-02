@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, Image } from 'react-native';
 import { constants, images, FONTS, SIZES, COLORS, icons } from '../../constants';
 import AuthLayout from './AuthLayout';
@@ -7,6 +7,10 @@ import CustomSwitch from '../../components/CustomSwitch';
 import TextIconButton from '../../components/TextIconButton';
 import { utils } from '../../utils'
 import TextButton from '../../components/TextButton';
+import { auth } from '../../firebase/firebase-config';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { getDatabase, ref, set } from "firebase/database";
+import { database } from '../../firebase/firebase-config';
 
 const SignUp = ({ navigation }) => {
     const [email, setEmail] = useState("")
@@ -20,6 +24,28 @@ const SignUp = ({ navigation }) => {
 
     function isEnableSignUp() {
         return email != "" && username != "" && pass != "" && erroremail == "" && errorpass == "" && errorusername == ""
+    }
+    function writeUserData(userId, username, email) {
+        set(ref(database, 'users/' + userId), {
+            username: username,
+            email: email,
+        });
+    }
+
+    const RegisterUser = () => {
+        createUserWithEmailAndPassword(auth, email, pass, username)
+            .then((userCredential) => {
+                // Signed in
+                const user = userCredential.user;
+                writeUserData(user.uid, username, user.email)
+                navigation.navigate("OTP")
+                console.log(userCredential);
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                // ..
+            });
     }
 
     return (
@@ -138,7 +164,9 @@ const SignUp = ({ navigation }) => {
                         borderRadius: SIZES.radius,
                         backgroundColor: isEnableSignUp() ? COLORS.primary : COLORS.transparentPrimary
                     }}
-                    onPress={() => navigation.navigate("OTP")}
+                    onPress={() => {
+                        RegisterUser();
+                    }}
                 />
                 <View
                     style={{
