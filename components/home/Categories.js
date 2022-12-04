@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import { View, Text, Image, ScrollView, TouchableOpacity } from "react-native";
 import { db } from "../../firebase/firebase-config";
 import { collection, getDocs } from 'firebase/firestore/lite'
+import { SwipeListView } from 'react-native-swipe-list-view'
 
-export default function Categories() {
+export default function Categories({ navigation }) {
 
     const [items, setItems] = useState([]);
     // const todo = db.firestore().collection('Item_Categories');
@@ -28,8 +29,20 @@ export default function Categories() {
         >
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                 {items.map((item, index) => (
-                    <View key={index} style={{ alignItems: "center", marginRight: 30 }}>
-                        <TouchableOpacity>
+                    <View key={index}
+
+                    >
+                        <TouchableOpacity
+                            onPress={() => navigation.navigate("Category", {
+                                name: item.text,
+                                type: item.type,
+                                img: item.image
+                            })}
+                            style={{
+                                alignItems: "center",
+                                marginRight: 30
+                            }}
+                        >
                             <Image
                                 source={{ uri: item.image }}
                                 style={{

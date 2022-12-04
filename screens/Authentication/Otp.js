@@ -6,7 +6,7 @@ import TextButton from "../../components/TextButton";
 import { constants, images, FONTS, SIZES, COLORS, icons } from '../../constants';
 import AuthLayout from './AuthLayout';
 
-const Otp = ({ navigation }) => {
+const Otp = ({ navigation, route }) => {
     const [time, setTime] = useState(60)
     useEffect(() => {
         let interval = setInterval(() => {
@@ -25,7 +25,7 @@ const Otp = ({ navigation }) => {
     return (
         <AuthLayout
             title={"OTP Authentication"}
-            subtitle="An .... sent to vu57212@gmail.com"
+            subtitle={"Một mã được gửi đến \n" + route.params.email}
             titleContainerStyle={{
                 // marginTop: SIZES.padding * 2
             }}
@@ -81,7 +81,11 @@ const Otp = ({ navigation }) => {
                             color: COLORS.primary,
                             ...FONTS.h3
                         }}
-                        onPress={() => setTime(60)}
+                        onPress={() => {
+                            setTime(60)
+
+                            // console.log(email);
+                        }}
                     />
                 </View>
                 {/* Footer */}

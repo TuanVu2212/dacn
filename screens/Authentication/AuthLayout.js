@@ -29,7 +29,7 @@ export default function AuthLayout({ title, subtitle, titleContainerStyle, child
                     }}
                 >
                     <Image
-                        source={images.logo_02}
+                        source={images.logo}
                         resizeMode='contain'
                         style={{
                             height: 100,

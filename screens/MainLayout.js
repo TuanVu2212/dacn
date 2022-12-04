@@ -8,21 +8,24 @@ import Home from './Home/Home'
 import BottomTabs from '../components/home/BottomTabs'
 import { SIZES } from '../constants'
 
-export default function MainLayout({ navigation, drawerAnimationStyles }) {
+export default function MainLayout({ navigation }) {
 
 
     return (
-        <SafeAreaView style={{
-            backgroundColor: "#ffffff",
-            flex: 1,
-        }}>
+        <SafeAreaView
+            style={{
+                backgroundColor: "#ffffff",
+                flex: 1,
+                paddingTop: 20,
+            }}
+        >
             {/* Header */}
             <View>
                 <HeaderTabs navigation={navigation} />
             </View>
 
             {/* Content */}
-            <Home />
+            <Home navigation={navigation} />
             {/* Footer */}
 
             <BottomTabs navigation={navigation} />

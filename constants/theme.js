@@ -10,6 +10,7 @@ export const COLORS = {
     lightOrange3: '#FFD9AD',
     green: "#27AE60",
     red: "#FF1717",
+    red2: "#FF6C44",
     blue: '#0064C0',
     darkBlue: "#111A2C",
     darkGray: "#525C67",
@@ -24,6 +25,7 @@ export const COLORS = {
     black: "#000000",
 
     transparent: 'transparent',
+    transparentWhite1: "rgba(255, 255, 255, 0.1)",
     transparentBlack1: "rgba(0, 0, 0, 0.1)",
     transparentBlack7: "rgba(0, 0, 0, 0.7)"
 
@@ -52,16 +54,18 @@ export const SIZES = {
     width,
     height
 };
+
+// const Poppins_Bold = require("../assets/")
 export const FONTS = {
     largeTitle: { fontSize: SIZES.largeTitle },
-    h1: { fontSize: SIZES.h1, lineHeight: 36 },
-    h2: { fontSize: SIZES.h2, lineHeight: 30 },
-    h3: { fontSize: SIZES.h3, lineHeight: 22 },
-    h4: { fontSize: SIZES.h4, lineHeight: 22 },
+    h1: { fontWeight: "Bold", fontSize: SIZES.h1, lineHeight: 36 },
+    h2: { fontWeight: 'bold', fontSize: SIZES.h2, lineHeight: 30 },
+    h3: { fontWeight: 'bold', fontSize: SIZES.h3, lineHeight: 22 },
+    h4: { fontWeight: 'bold', fontSize: SIZES.h4, lineHeight: 22 },
     h5: { fontSize: SIZES.h5, lineHeight: 22 },
-    body1: { fontSize: SIZES.body1, lineHeight: 36 },
-    body2: { fontSize: SIZES.body2, lineHeight: 30 },
-    body3: { fontSize: SIZES.body3, lineHeight: 22 },
+    body1: { fontWeight: 'bold', fontSize: SIZES.body1, lineHeight: 36 },
+    body2: { fontWeight: 'bold', fontSize: SIZES.body2, lineHeight: 30 },
+    body3: { fontWeight: 'bold', fontSize: SIZES.body3, lineHeight: 22 },
     body4: { fontSize: SIZES.body4, lineHeight: 22 },
     body5: { fontSize: SIZES.body5, lineHeight: 22 },
 };

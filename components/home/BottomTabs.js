@@ -16,10 +16,10 @@ export default function BottomTabs({ navigation }) {
         justifyContent: "space-between",
       }}
     >
-      <Icon icon="home" text="Home" onPress={() => navigation.replace("MainLayout")} />
-      <Icon icon="shopping-bag" text="Grocery" />
-      <Icon icon="receipt" text="Orders" onPress={() => navigation.replace("SignIn")} />
-      <Icon icon="user" text="Account" onPress={() => navigation.replace("User")} />
+      <Icon icon="home" text="Trang chủ" onPress={() => navigation.navigate("MainLayout")} />
+      <Icon icon="shopping-bag" text="Giỏ hàng" onPress={() => navigation.navigate("CartTab")} />
+      <Icon icon="receipt" text="Lịch sử" onPress={() => navigation.navigate("SignIn")} />
+      <Icon icon="user" text="Trang cá nhân" onPress={() => navigation.navigate("User")} />
     </View>
   );
 }

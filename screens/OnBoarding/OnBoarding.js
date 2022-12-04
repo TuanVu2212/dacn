@@ -59,34 +59,6 @@ export default function OnBoarding({ navigation }) {
             </View>
         )
     }
-
-    function renderHeaderLogo() {
-        return (
-            <View
-                style={{
-
-                    position: 'absolute',
-                    top: SIZES.height > 800 ? 50 : 25,
-                    left: 0,
-                    right: 0,
-                    alignItems: 'center',
-                    justifyContent: 'center'
-                }}
-            >
-                <Image
-                    source={images.logo_02}
-                    resizeMode='contain'
-                    style={{
-                        width: SIZES.width * 0.5,
-                        height: 100
-                    }}
-                >
-
-                </Image>
-            </View>
-        )
-    }
-
     function renderFooter() {
         return (
             <View
@@ -115,7 +87,7 @@ export default function OnBoarding({ navigation }) {
                         }}
                     >
                         <TextButton
-                            label="skip"
+                            label="Bỏ qua"
                             buttonContainerStyle={{
                                 backgroundColor: null
                             }}
@@ -125,7 +97,7 @@ export default function OnBoarding({ navigation }) {
                             onPress={() => navigation.replace("SignIn")}
                         />
                         <TextButton
-                            label="Next"
+                            label="Tiếp tục"
                             buttonContainerStyle={{
                                 height: 60,
                                 width: 200,
@@ -153,12 +125,12 @@ export default function OnBoarding({ navigation }) {
                         }}
                     >
                         <TextButton
-                            label={"Let start"}
+                            label={"Bắt đầu"}
                             buttonContainerStyle={{
                                 height: 60,
                                 borderRadius: SIZES.radius
                             }}
-                            onPress={() => navigation.replace("MainLayout")}
+                            onPress={() => navigation.replace("SignIn")}
                         />
 
 
@@ -174,7 +146,7 @@ export default function OnBoarding({ navigation }) {
                 backgroundColor: COLORS.white
             }}
         >
-            {renderHeaderLogo()}
+            {/* {renderHeaderLogo()} */}
             <Animated.FlatList
                 ref={flatListRef}
                 horizontal

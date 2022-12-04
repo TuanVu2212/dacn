@@ -17,7 +17,11 @@ import {
   ForgotPassword,
   Otp,
   MainLayout,
-  User
+  CartTab,
+  MyCard,
+  User,
+  ProductDetail,
+  Category
 } from './screens'
 
 const store = createStore(
@@ -37,7 +41,7 @@ export default function RootNavigation() {
     <Provider store={store}>
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="User"
+          initialRouteName="MainLayout"
           screenOptions={screenOptions}
         >
           {/* <Stack.Screen
@@ -47,6 +51,22 @@ export default function RootNavigation() {
           <Stack.Screen
             name="MainLayout"
             component={MainLayout}
+          />
+          <Stack.Screen
+            name="MyCard"
+            component={MyCard}
+          />
+          <Stack.Screen
+            name="ProductDetail"
+            component={ProductDetail}
+          />
+          <Stack.Screen
+            name="CartTab"
+            component={CartTab}
+          />
+          <Stack.Screen
+            name="Category"
+            component={Category}
           />
           <Stack.Screen
             name="SignUp"

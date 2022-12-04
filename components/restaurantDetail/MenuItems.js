@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity } from "rea
 import { Divider } from "react-native-elements";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 // import { useDispatch, useSelector } from "react-redux";
+import { FONTS } from '../../constants'
 
 const styles = StyleSheet.create({
   menuItemStyle: {
@@ -22,18 +23,22 @@ export default function MenuItems({
   foods,
   hideCheckbox,
   marginLeft,
+  navigation
 }) {
   return (
     <>
       <ScrollView showsVerticalScrollIndicator={false}>
         {foods.map((food, index) => (
           <View key={index}>
-            <View style={
-              styles.menuItemStyle
-            }>
+            <TouchableOpacity
+              style={
+                styles.menuItemStyle
+              }
+              onPress={() => navigation.navigate("ProductDetail")}
+            >
               <FoodInfo food={food} />
               <FoodImage food={food} marginLeft={marginLeft ? marginLeft : 0} />
-            </View>
+            </TouchableOpacity>
             <Divider
               width={0.5}
               orientation="vertical"
@@ -51,16 +56,30 @@ export default function MenuItems({
 
 const FoodInfo = (props) => (
   <View style={{ width: "55%", justifyContent: "space-evenly" }}>
-    <Text style={styles.titleStyle}>{props.food.title}</Text>
-    <Text>{props.food.description}</Text>
-    <Text>{props.food.price}</Text>
+    <Text style={{
+      ...styles.titleStyle,
+      fontWeight: 'bold',
+      ...FONTS.h2
+    }}>{props.food.name}</Text>
+    <Text
+      style={{
+        ...FONTS.h5
+      }}
+    >
+      {props.food.text}</Text>
+    <Text
+      style={{
+        ...FONTS.h3
+      }}
+    >
+      Giá: {props.food.price}.000đ</Text>
   </View>
 );
 
 const FoodImage = ({ marginLeft, ...props }) => (
   <View>
     <Image
-      source={{ uri: props.food.image }}
+      source={{ uri: props.food.img_url }}
       style={{
         width: 100,
         height: 100,

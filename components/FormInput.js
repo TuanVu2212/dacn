@@ -15,7 +15,8 @@ export default function FormInput({
     keyboardType = 'default',
     autoCompleteType = "off",
     autoCapitalixe = "none",
-    errorMsg = ""
+    errorMsg = "",
+    setValue
 }) {
     return (
         <View
@@ -48,12 +49,13 @@ export default function FormInput({
                     backgroundColor: COLORS.lightGray2
                 }}
             >
-                {prependComponent}
+                <Text>{prependComponent}</Text>
                 <TextInput
                     style={{
                         flex: 1,
                         ...inputStyle
                     }}
+                    value={setValue}
                     placeholder={placeholder}
                     placeholderTextColor={COLORS.gray}
                     secureTextEntry={secureTextEntry}

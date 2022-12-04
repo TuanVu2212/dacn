@@ -11,9 +11,16 @@ import { COLORS, FONTS, icons, images, SIZES } from '../../constants'
 import FormInput from '../../components/FormInput'
 import { utils } from '../../utils'
 import TextButton from '../../components/TextButton'
+import { auth } from '../../firebase/firebase-config'
+import { database } from '../../firebase/firebase-config'
+import { ref, onValue } from "firebase/database";
+import { onAuthStateChanged, signOut } from "firebase/auth";
+
+
 
 
 export default function Info({ navigation }) {
+
     const [email, setEmail] = useState("")
     const [username, setUserName] = useState("")
     const [phonenumber, setPhoneNumber] = useState("")
@@ -22,6 +29,34 @@ export default function Info({ navigation }) {
     const [erroremail, setErrorEmail] = useState("")
     const [errorusername, setErrorUserName] = useState("")
     const [errorpass, setErrorPass] = useState("")
+
+
+    useEffect(() => {
+        if (auth.currentUser) {
+            const starCountRef = ref(database, 'users/' + auth.currentUser.uid);
+            onValue(starCountRef, (snapshot) => {
+                const data = snapshot.val();
+                setUserName(data.username)
+                setEmail(data.email)
+                setPhoneNumber(data.phonenumber)
+                setAddRess(data.address)
+            });
+        }
+    })
+
+
+    const SignOUT = () => {
+        signOut(auth)
+            .then((e) => {
+                setUserName("")
+                setEmail("")
+                setPhoneNumber("")
+                setAddRess("")
+            }).catch((err) => {
+                console.log(err);
+            })
+    }
+
 
     return (
         <View
@@ -50,25 +85,21 @@ export default function Info({ navigation }) {
                     marginTop: SIZES.radius,
                     width: "90%",
                 }}
+                // onChange={"a"}
                 onChange={(value) => {
-                    // utils.va
+
                     setUserName(value)
                 }}
+                setValue={username}
                 // errorMsg={errorusername}
+                // placeholder={"sadasd"}
                 appendComponent={
                     <View
                         style={{
                             justifyContent: 'center',
                         }}
                     >
-                        <Image
 
-                            style={{
-                                height: 20,
-                                width: 20,
-                                tintColor: COLORS.gray
-                            }}
-                        />
 
                     </View>
                 }
@@ -85,6 +116,7 @@ export default function Info({ navigation }) {
                     utils.validateEmail(value, setErrorEmail)
                     setEmail(value)
                 }}
+                setValue={email}
                 errorMsg={erroremail}
                 appendComponent={
                     <View
@@ -117,6 +149,7 @@ export default function Info({ navigation }) {
                     // utils.va
                     setPhoneNumber(value)
                 }}
+                // setValue={phonenumber}
                 // errorMsg={errorusername}
                 appendComponent={
                     <View
@@ -170,7 +203,7 @@ export default function Info({ navigation }) {
             />
             {/* SIGNOUT*/}
             <TextButton
-                label={"Sign Out"}
+                label={auth.currentUser ? "Đăng xuất" : "Đăng nhập"}
                 disabel={false}
                 buttonContainerStyle={{
                     height: 55,
@@ -180,9 +213,7 @@ export default function Info({ navigation }) {
                     borderRadius: SIZES.radius,
                     backgroundColor: COLORS.primary
                 }}
-                onPress={() => {
-                    navigation.navigate("SignUp")
-                }}
+                onPress={() => auth.currentUser ? SignOUT() : navigation.navigate("OnBoarding")}
             />
         </View>
     )

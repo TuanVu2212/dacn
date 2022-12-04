@@ -57,7 +57,7 @@ export default function CustomSwitch({ value, onChange }) {
                         ...FONTS.body4
                     }}
                 >
-                    Save Me
+                    Nhớ tài khoản
                 </Text>
             </View>
 

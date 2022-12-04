@@ -13,6 +13,9 @@ import Favourite from "./Favourite/Favourite"
 import Notification from "./Notification/Notification"
 import MainLayout from "./MainLayout"
 import User from "./user/User"
+import ProductDetail from "./Product/ProductDetail"
+import Category from './Categories/Category'
+import MyCard from './Cart/MyCart'
 
 export {
     OnBoarding,
@@ -27,5 +30,8 @@ export {
     Favourite,
     Notification,
     MainLayout,
-    User
+    User,
+    ProductDetail,
+    Category,
+    MyCard
 }

@@ -35,7 +35,7 @@ export default function SignIn({ navigation }) {
                 console.log(user.uid);
                 console.log('====================================');
 
-                // navigation.navigate("MainLayout")
+                navigation.navigate("MainLayout")
             })
             .catch((error) => {
                 const errorCode = error.code;
@@ -47,8 +47,8 @@ export default function SignIn({ navigation }) {
 
     return (
         <AuthLayout
-            title="Let Sign you In"
-            subtitle="choaf "
+            title="Đăng nhập tài khoản của bạn"
+        // subtitle="choaf "
         >
             <View
                 style={{
@@ -89,7 +89,7 @@ export default function SignIn({ navigation }) {
                 />
 
                 <FormInput
-                    label={"Password: "}
+                    label={"Mật khẩu: "}
                     secureTextEntry={!showpass}
                     autoCompleteType='password'
                     onChange={(value) => {
@@ -135,7 +135,7 @@ export default function SignIn({ navigation }) {
                         onChange={(value) => setSaveMe(value)}
                     />
                     <TextButton
-                        label={"Forgot password?"}
+                        label={"Quên mật khẩu?"}
                         buttonContainerStyle={{
                             backgroundColor: null
                         }}
@@ -149,7 +149,7 @@ export default function SignIn({ navigation }) {
                 </View>
                 {/* SIGNIN */}
                 <TextButton
-                    label={"Sign In"}
+                    label={"Đăng nhập"}
                     disabel={isEnableSignIn() ? false : true}
                     buttonContainerStyle={{
                         height: 55,
@@ -175,9 +175,9 @@ export default function SignIn({ navigation }) {
                             color: COLORS.darkGray,
                             ...FONTS.body3
                         }}
-                    >Don't have an account?</Text>
+                    >Bạn chưa có tài khoản? Hãy nhấn</Text>
                     <TextButton
-                        label={"Sign up"}
+                        label={"đăng ký"}
                         buttonContainerStyle={{
                             marginLeft: 3,
                             backgroundColor: null

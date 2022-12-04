@@ -38,7 +38,7 @@ const SignUp = ({ navigation }) => {
                 // Signed in
                 const user = userCredential.user;
                 writeUserData(user.uid, username, user.email)
-                navigation.navigate("OTP")
+                navigation.navigate("OTP", { email: email })
                 console.log(userCredential);
             })
             .catch((error) => {
@@ -50,8 +50,8 @@ const SignUp = ({ navigation }) => {
 
     return (
         <AuthLayout
-            title="Let Sign you In"
-            subtitle="choaf "
+            title="Hãy đăng ký tài khoản"
+        // subtitle="choaf "
         >
             <View>
                 <FormInput
@@ -89,7 +89,7 @@ const SignUp = ({ navigation }) => {
 
                 {/* Username */}
                 <FormInput
-                    label={"Username: "}
+                    label={"Tên người dùng: "}
                     autoCompleteType='Username'
                     containerStyles={{
                         marginTop: SIZES.radius
@@ -118,7 +118,7 @@ const SignUp = ({ navigation }) => {
                     }
                 />
                 <FormInput
-                    label={"Password: "}
+                    label={"Mật khẩu: "}
                     secureTextEntry={!showpass}
                     autoCompleteType='password'
                     containerStyles={{
@@ -155,7 +155,7 @@ const SignUp = ({ navigation }) => {
 
                 {/* Sign up & Sign In */}
                 <TextButton
-                    label={"Sign Up"}
+                    label={"Đăng ký"}
                     disabel={isEnableSignUp() ? false : true}
                     buttonContainerStyle={{
                         height: 55,
@@ -165,7 +165,7 @@ const SignUp = ({ navigation }) => {
                         backgroundColor: isEnableSignUp() ? COLORS.primary : COLORS.transparentPrimary
                     }}
                     onPress={() => {
-                        RegisterUser();
+                        RegisterUser(email);
                     }}
                 />
                 <View
@@ -180,9 +180,9 @@ const SignUp = ({ navigation }) => {
                             color: COLORS.darkGray,
                             ...FONTS.body3
                         }}
-                    >Already have an account?</Text>
+                    >Bạn đã có tài khoản? Hãy nhấn</Text>
                     <TextButton
-                        label={"Sign In"}
+                        label={" đăng nhập"}
                         buttonContainerStyle={{
                             backgroundColor: null
                         }}

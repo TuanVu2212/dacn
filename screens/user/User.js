@@ -13,11 +13,11 @@ export default function User({ navigation }) {
             backgroundColor: "#ffffff",
             flex: 1,
         }}>
-            <Info />
+            <Info navigation={navigation} />
 
             {/* Footer */}
 
-            <BottomTabs navigation={navigation} />
+            < BottomTabs navigation={navigation} />
         </SafeAreaView>
     )
 }

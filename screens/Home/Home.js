@@ -66,7 +66,7 @@ function renderSearch() {
     )
 }
 
-export default function Home() {
+export default function Home({ navigation }) {
     const [slide, setSlide] = useState([]);
     useEffect(() => {
         const GetData = async () => {
@@ -86,11 +86,11 @@ export default function Home() {
             }}
         >
             {renderSearch()}
-            <Categories />
+            <Categories navigation={navigation} />
             <ScrollView showsVerticalScrollIndicator={false}>
                 <Carousel data={slide} />
-                <Carousel data={slide} />
-                <RestaurantDetail />
+                {/* <Carousel data={slide} /> */}
+                <RestaurantDetail navigation={navigation} />
             </ScrollView>
 
         </View>
