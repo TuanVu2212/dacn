@@ -1,3 +1,4 @@
+// import { initializeApp } from 'firebase/app';
 import { initializeApp } from 'firebase/app';
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { getFirestore } from 'firebase/firestore/lite';
@@ -13,19 +14,10 @@ const firebaseConfig = {
     databaseURL: "https://dacn1-c94d6-default-rtdb.firebaseio.com",
 };
 
-
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
 const database = getDatabase(app);
-
-// if (appfirebase.apps.leght == 0) {
-// app = initializeApp(firebaseConfig);
-// } else {
-// app = appfirebase.app()
-// }
-
 export {
     db,
     auth,

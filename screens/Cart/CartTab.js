@@ -6,52 +6,64 @@ import { SwipeListView } from 'react-native-swipe-list-view'
 import { COLORS, FONTS, icons, SIZES } from '../../constants'
 import StepperInput from '../Product/StepperInput'
 import IconButton from '../../components/IconButton'
-import LinearGradient from 'react-native-linear-gradient'
 import { Divider } from 'react-native-elements'
 import TextButton from '../../components/TextButton'
-// import { LinearGradient } from 'expo-linear-gradient';
-
-const foods = [
-    {
-        id: 1,
-        name: "Lasagna",
-        description: "With butter lettuce, tomato and sauce bechamel",
-        img: "https://firebasestorage.googleapis.com/v0/b/dacn1-c94d6.appspot.com/o/Product%2Fchau%2Fchau17.jpg?alt=media&token=400a0613-8939-445f-b4a0-43fdf735f29d",
-        price: "$13.50",
-        qty: 1,
-    },
-    {
-        id: 2,
-        name: "Tandoori Chicken",
-        img: "https://firebasestorage.googleapis.com/v0/b/dacn1-c94d6.appspot.com/o/Product%2Fhopqua%2FHopqua284.jpg?alt=media&token=902a57b7-66a7-439b-aefa-4562c07e2940",
-        description:
-            "Amazing Indian dish with tenderloin chicken off the sizzles 🔥",
-        price: "$13.50",
-        qty: 2,
-    },
-    {
-        id: 3,
-        name: "Chilaquiles",
-        description:
-            "Chilaquiles with cheese and sauce. A delicious mexican dish 🇲🇽",
-        img: "https://firebasestorage.googleapis.com/v0/b/dacn1-c94d6.appspot.com/o/Product%2Fden%2FdenOFF.jpg?alt=media&token=c64b6600-d4f7-47b8-9db1-dc311983c9d1",
-        price: "$14.50",
-        qty: 1,
-    },
-];
+import { auth, db } from '../../firebase/firebase-config'
+import { collection, doc, setDoc, getDocs, deleteDoc } from 'firebase/firestore/lite'
 
 export default function CartTab({ navigation }) {
-    const [mycartlist, setCartList] = useState(foods)
-
-    function updateQTYHandler(newQty, id) {
-        // const newMy 1:3:52
-        return 0
+    const [mycartlist, setCartList] = useState([])
+    const [total_price, settotal_price] = useState(0)
+    const [shippingFee, setShippingFee] = useState(0)
+    const [total, setTotal] = useState(0)
+    let sum_total = 0
+    let key = 0
+    const GetData = async () => {
+        const currentUser_items = collection(db, 'Cart/' + auth.currentUser.uid + '/CurrentUser');
+        const currentUser_itemsSnapshot = await getDocs(currentUser_items);
+        const currentUser_List = currentUser_itemsSnapshot.docs.map(doc => doc.data());
+        setCartList(currentUser_List);
+        // console.log(currentUser_List);
+        currentUser_List.map((item, indx) => {
+            key = indx
+            sum_total = sum_total + (item.price * item.qty)
+            settotal_price(sum_total)
+            setTotal(sum_total + shippingFee)
+        })
     }
+    useEffect(() => {
+        GetData();
+    }, []);
+    const QTYHandler = async (list, status) => {
+        if (status == "plus") {
+            await setDoc(doc(db, "Cart/" + auth.currentUser.uid + "/CurrentUser", list.name), {
+                img_url: list.img_url,
+                name: list.name,
+                price: list.price,
+                qty: list.qty + 1,
+            });
+        }
+        else if (status == "minus") {
+            await setDoc(doc(db, "Cart/" + auth.currentUser.uid + "/CurrentUser", list.name), {
+                img_url: list.img_url,
+                name: list.name,
+                price: list.price,
+                qty: list.qty - 1,
+            });
+        }
+        else if (status == "delete") {
+
+            await deleteDoc(doc(db, "Cart/" + auth.currentUser.uid + "/CurrentUser", list.name));
+        }
+
+        GetData();
+    }
+
     function renderCartList() {
         return (
             <SwipeListView
                 data={mycartlist}
-                keyExtractor={item => `${item.id}`}
+                // keyExtractor={item => `${item.id}`}
                 contentContainerStyle={{
                     marginTop: SIZES.radius,
                     paddingHorizontal: SIZES.padding,
@@ -59,13 +71,14 @@ export default function CartTab({ navigation }) {
                 }}
                 disableRightSwipe={true}
                 rightOpenValue={-75}
-                renderItem={(data, rowMap) =>
+                renderItem={(data, idx) =>
                     <View
                         style={{
                             height: 110,
                             backgroundColor: COLORS.lightGray2,
                             ...styles.cartItemContainer
                         }}
+                        key={idx}
                     >
                         <View
                             style={{
@@ -75,19 +88,22 @@ export default function CartTab({ navigation }) {
                             }}
                         >
                             <Image
-                                source={{ uri: data.item.img }}
+                                source={{ uri: data.item.img_url }}
                                 style={{
                                     width: "100%",
                                     height: "100%",
                                     position: 'absolute',
-                                    top: 10
+                                    top: 10,
+                                    borderRadius: SIZES.radius,
                                 }}
                             />
 
                         </View>
+
                         <View
                             style={{
-                                flex: 1
+                                flex: 1,
+                                marginLeft: SIZES.padding
                             }}
                         >
                             <Text
@@ -96,29 +112,31 @@ export default function CartTab({ navigation }) {
                                 }}
                             > {data.item.name}</Text>
                             <Text
-                                style={{ color: COLORS.primary, ...FONTS.h3 }}
-                            >{data.item.price}đ</Text>
+                                style={{ color: COLORS.gray2, ...FONTS.h4 }}
+                            > {data.item.price}.000đ</Text>
+                            <Text
+                                style={{ color: COLORS.primary, ...FONTS.h4 }}
+                            > {data.item.price * data.item.qty}.000đ</Text>
                         </View>
                         <StepperInput
                             containerStyle={{
                                 height: 50,
-                                width: 125,
+                                width: 100,
                                 backgroundColor: COLORS.white
                             }}
                             value={data.item.qty}
                             onAdd={() => {
-                                updateQTYHandler(data.item.qty + 1, data.item.id)
+                                QTYHandler(data.item, "plus")
                             }}
-                            onMinus={() => {
-                                if (data.item.qty > 1) {
-                                    updateQTYHandler(data.item.qty - 1, data.item.id)
-                                }
+                            onMinus={async () => {
+                                QTYHandler(data.item, "minus")
                             }}
                         />
 
                     </View>
                 }
-                renderHiddenItem={(data, rowMap) => (
+
+                renderHiddenItem={(data, ind) => (
                     <IconButton
                         containerStyle={{
                             flex: 1,
@@ -126,20 +144,21 @@ export default function CartTab({ navigation }) {
                             backgroundColor: COLORS.primary,
                             ...styles.cartItemContainer
                         }}
+                        key={ind}
                         icon={icons.delete_icon}
                         iconStyle={{
                             marginRight: 10
 
                         }}
-                        onPress={() => console.log("Xoa")}
+                        onPress={() => {
+                            QTYHandler(data.item, "delete")
+                        }}
                     />
-                )
-
-                }
+                )}
             />
         )
     }
-
+    // https://www.youtube.com/watch?v=OZrr5h5Z_mY&list=PLesEwfOYAU4YcaYveepDhq3wQI4iqLlPe&index=30 / 5:44
     return (
         <View style={{
             backgroundColor: "#ffffff",
@@ -150,9 +169,9 @@ export default function CartTab({ navigation }) {
 
             {renderCartList()}
             <FooterTotal
-                subTotal={37}
-                shippingFee={0.0}
-                total={37}
+                subTotal={total_price}
+                shippingFee={shippingFee}
+                total={total}
                 navigation={navigation}
             />
 
@@ -176,10 +195,11 @@ const FooterTotal = ({ subTotal, shippingFee, total, onPress, navigation }) => {
             <Divider width={0.5} style={{ marginVertical: 10 }} />
             <View
                 style={{
-                    padding: SIZES.padding,
                     borderTopLeftRadius: 20,
                     borderTopRightRadius: 20,
-                    backgroundColor: COLORS.white
+                    backgroundColor: COLORS.white,
+                    marginLeft: SIZES.padding / 2,
+                    marginRight: SIZES.padding / 2
                 }}
             >
                 <View
@@ -188,7 +208,7 @@ const FooterTotal = ({ subTotal, shippingFee, total, onPress, navigation }) => {
                     }}
                 >
                     <Text style={{ flex: 1, ...FONTS.body3 }}>Tổng sản phẩm</Text>
-                    <Text style={{ ...FONTS.h3 }}>{subTotal}đ</Text>
+                    <Text style={{ ...FONTS.h3 }}>{subTotal}.000đ</Text>
                 </View>
 
                 <View
@@ -196,8 +216,8 @@ const FooterTotal = ({ subTotal, shippingFee, total, onPress, navigation }) => {
                         flexDirection: 'row'
                     }}
                 >
-                    <Text style={{ flex: 1, ...FONTS.body3 }}>Tổng sản phẩm</Text>
-                    <Text style={{ ...FONTS.h3 }}>{shippingFee}đ</Text>
+                    <Text style={{ flex: 1, ...FONTS.body3 }}>Tiền ship</Text>
+                    <Text style={{ ...FONTS.h3 }}>{shippingFee}.000đ</Text>
                 </View>
                 <Divider width={0.5} color={COLORS.lightOrange} style={{ marginVertical: 10 }} />
                 <View
@@ -205,26 +225,33 @@ const FooterTotal = ({ subTotal, shippingFee, total, onPress, navigation }) => {
                         flexDirection: 'row'
                     }}
                 >
-                    <Text style={{ flex: 1, ...FONTS.body3 }}>Tổng sản phẩm</Text>
-                    <Text style={{ ...FONTS.h3 }}>{total}đ</Text>
+                    <Text style={{ flex: 1, ...FONTS.body3 }}>TỔNG</Text>
+                    <Text style={{ ...FONTS.h3 }}>{total}.000đ</Text>
                 </View>
             </View>
-            <TextButton
-                label={"Thanh Toán"}
-                disabel={false}
-                buttonContainerStyle={{
-                    height: 55,
-                    alignItems: 'center',
-                    marginTop: SIZES.padding,
-                    marginBottom: SIZES.padding,
-                    borderRadius: SIZES.radius,
-                    backgroundColor: COLORS.primary
+            <View
+                style={{
+                    alignItems: 'center'
                 }}
-                onPress={() => {
-                    navigation.navigate("MyCard")
-                    console.log("Thanh Toán");
-                }}
-            />
+            >
+                <TextButton
+                    label={"Thanh Toán"}
+                    disabel={false}
+                    buttonContainerStyle={{
+                        height: 40,
+                        width: 300,
+                        alignItems: 'center',
+                        marginTop: SIZES.padding,
+                        marginBottom: SIZES.padding,
+                        borderRadius: SIZES.radius,
+                        backgroundColor: COLORS.primary
+                    }}
+                    onPress={() => {
+                        // total > 0 ? navigation.navigate("MyCard") : console.log("Thanh Toán");
+                        console.log("Thanh Toán");
+                    }}
+                />
+            </View>
 
         </View>
     )

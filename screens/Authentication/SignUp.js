@@ -165,7 +165,7 @@ const SignUp = ({ navigation }) => {
                         backgroundColor: isEnableSignUp() ? COLORS.primary : COLORS.transparentPrimary
                     }}
                     onPress={() => {
-                        RegisterUser(email);
+                        RegisterUser();
                     }}
                 />
                 <View

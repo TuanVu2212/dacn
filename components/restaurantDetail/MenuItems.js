@@ -18,13 +18,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function MenuItems({
-  restaurantName,
-  foods,
-  hideCheckbox,
-  marginLeft,
-  navigation
-}) {
+export default function MenuItems({ restaurantName, foods, marginLeft, navigation }) {
   return (
     <>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -34,7 +28,11 @@ export default function MenuItems({
               style={
                 styles.menuItemStyle
               }
-              onPress={() => navigation.navigate("ProductDetail")}
+              onPress={() => {
+                navigation.navigate("ProductDetail", {
+                  foodproduct: food
+                })
+              }}
             >
               <FoodInfo food={food} />
               <FoodImage food={food} marginLeft={marginLeft ? marginLeft : 0} />

@@ -34,11 +34,11 @@ export default function Category({ navigation, route }) {
         GetAllData();
 
     }, []);
-    // useEffect(() => {
-    //     console.log('====================================');
-    //     console.log(foods);
-    //     console.log('====================================');
-    // }, [])
+    useEffect(() => {
+        console.log('====================================');
+        console.log(foods);
+        console.log('====================================');
+    }, [])
     return (
         <SafeAreaView
             style={{

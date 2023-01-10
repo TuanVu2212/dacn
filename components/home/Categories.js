@@ -7,8 +7,6 @@ import { SwipeListView } from 'react-native-swipe-list-view'
 export default function Categories({ navigation }) {
 
     const [items, setItems] = useState([]);
-    // const todo = db.firestore().collection('Item_Categories');
-    // console.log("yess");
 
     useEffect(() => {
         const GetData = async () => {

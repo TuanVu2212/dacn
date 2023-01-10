@@ -11,7 +11,7 @@ export default function RestaurantDetail({ route, navigation }) {
     const [foods, setFood] = useState([]);
     useEffect(() => {
         const GetData = async () => {
-            const slide_items = collection(db, 'HomeProduct');
+            const slide_items = collection(db, 'AllProduct');
             const slide_itemsSnapshot = await getDocs(slide_items);
             const itemList = slide_itemsSnapshot.docs.map(doc => doc.data());
             setFood(itemList);
@@ -20,9 +20,7 @@ export default function RestaurantDetail({ route, navigation }) {
     }, []);
     return (
         <View>
-            {/* <About route={route} /> */}
             <MenuItems foods={foods} navigation={navigation} />
-            {/* <ViewCart navigation={navigation} /> */}
         </View>
     );
 }

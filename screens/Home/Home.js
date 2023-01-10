@@ -4,14 +4,12 @@ import {
     TouchableOpacity,
     Image,
     TextInput,
-    FlatList
 } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { COLORS, dummyData, FONTS, icons, SIZES } from '../../constants'
+import { COLORS, FONTS, icons, SIZES } from '../../constants'
 import RestaurantDetail from './RestaurantDetail'
 import Categories from '../../components/home/Categories'
 import Carousel from "../../components/home/carousel/Carousel";
-// import from "../../components/home/carousel";
 import { ScrollView } from 'react-native'
 import { db } from "../../firebase/firebase-config";
 import { collection, getDocs } from 'firebase/firestore/lite'

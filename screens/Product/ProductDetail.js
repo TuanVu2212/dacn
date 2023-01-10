@@ -6,10 +6,19 @@ import BottomTabs from '../../components/home/BottomTabs'
 import TextButton from '../../components/TextButton'
 import StepperInput from './StepperInput'
 import TextIconButton from '../../components/TextIconButton'
+import { useEffect } from 'react'
+import { database, auth, db } from '../../firebase/firebase-config'
+import { collection, addDoc, doc, setDoc, getDocs, getDoc } from 'firebase/firestore/lite'
 
-function renderDetails() {
+function renderDetails({ img_url_product, name_product, text_product, price_product }) {
     const listcolors = ["Đen", "Trắng", "Đỏ", "Vàng"];
     const [selectcolor, setSelectColor] = useState("");
+    // useEffect(() => {
+    //     console.log(img_url_product);
+    //     console.log(name_product);
+    //     console.log(text_product);
+    //     console.log(price_product);
+    // })
     return (
         <View
             style={{
@@ -68,7 +77,7 @@ function renderDetails() {
                     }}
                 >
                     <Image
-                        source={{ uri: "https://firebasestorage.googleapis.com/v0/b/dacn1-c94d6.appspot.com/o/Product%2Fden%2FdenOFF1.jpg?alt=media&token=2a0aadb6-d80f-4a4b-a5b2-32a0d7ef6533" }}
+                        source={{ uri: img_url_product }}
                         resizeMode='contain'
                         style={{
                             height: 150,
@@ -87,7 +96,7 @@ function renderDetails() {
                 <Text
                     style={{ ...FONTS.h1 }}
                 >
-                    Đèn ngủ 1
+                    {name_product}
                 </Text>
                 <Text
                     style={{
@@ -97,7 +106,7 @@ function renderDetails() {
                         ...FONTS.body3
                     }}
                 >
-                    Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                    {text_product}
                 </Text>
                 {/* Start */}
                 <View
@@ -180,7 +189,7 @@ function renderDetails() {
                         ...FONTS.h3,
                         marginTop: 20
                     }}
-                >Giá: {"12"}.000đ</Text>
+                >Giá: {price_product}.000đ</Text>
 
                 {/* StepInput */}
                 {/* {renderFooter()} */}
@@ -189,8 +198,60 @@ function renderDetails() {
     )
 }
 
-function renderFooter() {
+
+
+function renderFooter({ navigation, item_food }) {
     const [qty, setQty] = useState(0);
+
+    const AddtoCart = async () => {
+        const CartRef = collection(db, 'Cart'); //CurrentUser
+        // 
+        try {
+            // await setDoc(doc(db, "Cart/" + auth.currentUser.uid + "/CurrentUser", item_food.name), {
+            //     img_url: item_food.img_url,
+            //     name: item_food.name,
+            //     price: item_food.price,
+            //     qty: qty,
+            // });
+            const currentUser_items = collection(db, 'Cart/' + auth.currentUser.uid + '/CurrentUser');
+            const currentUser_itemsSnapshot = await getDocs(currentUser_items);
+            const currentUser_List = currentUser_itemsSnapshot.docs.map(doc => doc.data());
+            currentUser_List.map((item, key) => {
+                console.log('====================================');
+                console.log(item.name);
+                console.log('====================================');
+                // let sum_price = 
+                while (Boolean(item_food.name == item.name)) {
+                    console.log(Boolean(item_food.name == item.name))
+                    console.log((qty + item.qty));
+                    setDoc(doc(db, "Cart/" + auth.currentUser.uid + "/CurrentUser", item_food.name), {
+                        img_url: item_food.img_url,
+                        name: item_food.name,
+                        price: item_food.price,
+                        qty: qty + item.qty,
+                    });
+                    break
+                }
+                if (Boolean(item_food.name == item.name) == false) {
+                    console.log(Boolean(item_food.name == item.name))
+                    setDoc(doc(db, "Cart/" + auth.currentUser.uid + "/CurrentUser", item_food.name), {
+                        img_url: item_food.img_url,
+                        name: item_food.name,
+                        price: item_food.price,
+                        qty: qty,
+                    });
+                }
+
+                // }
+            })
+
+
+            console.log("Document written with ID: ", auth.currentUser.uid);
+        } catch (e) {
+            console.error("Error adding document: ", e);
+        }
+        // console.log("ITEM: ", item_food.name);
+    }
     return (
         <View
             style={{
@@ -218,16 +279,22 @@ function renderFooter() {
                     marginLeft: SIZES.radius,
                     paddingHorizontal: SIZES.radius,
                     borderRadius: SIZES.radius,
-                    backgroundColor: COLORS.primary
+                    backgroundColor: qty > 0 ? COLORS.primary : COLORS.transparentPrimary
                 }}
+                onPress={() => auth.currentUser ? AddtoCart() : navigation.navigate("SignIn")}
                 label={"Bỏ vào giỏ hàng"}
             />
         </View>
     )
 }
 
-export default function ProductDetail({ navigation }) {
-    const [foodItem, setFoodItem] = useState("")
+export default function ProductDetail({ navigation, route }) {
+    const [foodItem, setFoodItem] = useState(route.params.foodproduct)
+    useEffect(() => {
+        console.log('====================================');
+        console.log(foodItem.img_url);
+        console.log('====================================');
+    })
     return (
         <View
             style={{
@@ -249,13 +316,24 @@ export default function ProductDetail({ navigation }) {
             >
                 <ScrollView>
                     {/* Body */}
-                    {renderDetails()}
-                    {renderFooter()}
+                    {renderDetails({
+                        img_url_product: foodItem.img_url,
+                        name_product: foodItem.name,
+                        text_product: foodItem.text,
+                        price_product: foodItem.price
+                    })}
+                    {renderFooter(
+
+                        {
+                            navigation: { navigation },
+                            item_food: foodItem
+                        }
+                    )}
                 </ScrollView>
             </View>
             {/* Footer */}
 
-            <BottomTabs navigation={navigation} />
+            {/* <BottomTabs navigation={navigation} /> */}
         </View>
     )
 }
