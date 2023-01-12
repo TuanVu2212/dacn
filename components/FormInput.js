@@ -16,7 +16,8 @@ export default function FormInput({
     autoCompleteType = "off",
     autoCapitalixe = "none",
     errorMsg = "",
-    setValue
+    setValue,
+    maxlenght
 }) {
     return (
         <View
@@ -64,6 +65,8 @@ export default function FormInput({
                     autoCapitalize={autoCapitalixe}
                     onChangeText={(text) => onChange(text)}
                     readonly={readonly}
+                    maxLength={maxlenght}
+
                 />
                 {appendComponent}
 

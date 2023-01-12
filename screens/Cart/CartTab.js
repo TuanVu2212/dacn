@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, ScrollView, Image } from 'react-native'
+import { View, Text, StyleSheet, ScrollView, Image, Alert } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import BottomTabs from '../../components/home/BottomTabs'
 import HeaderTabs from '../../components/home/HeaderTabs'
@@ -158,7 +158,6 @@ export default function CartTab({ navigation }) {
             />
         )
     }
-    // https://www.youtube.com/watch?v=OZrr5h5Z_mY&list=PLesEwfOYAU4YcaYveepDhq3wQI4iqLlPe&index=30 / 5:44
     return (
         <View style={{
             backgroundColor: "#ffffff",
@@ -247,8 +246,8 @@ const FooterTotal = ({ subTotal, shippingFee, total, onPress, navigation }) => {
                         backgroundColor: COLORS.primary
                     }}
                     onPress={() => {
-                        // total > 0 ? navigation.navigate("MyCard") : console.log("Thanh Toán");
-                        console.log("Thanh Toán");
+                        total > 0 ? navigation.navigate("Mypayment") :
+                            Alert.alert('Thông báo', "Vui lòng thêm sản phẩm vào giỏ hàng");
                     }}
                 />
             </View>

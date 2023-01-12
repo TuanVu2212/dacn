@@ -21,7 +21,12 @@ import {
   MyCard,
   User,
   ProductDetail,
-  Category
+  Category,
+  PurchaseHistory,
+  Mypayment,
+  AddCard,
+  Checkout,
+  Success
 } from './screens'
 
 const store = createStore(
@@ -91,6 +96,27 @@ export default function RootNavigation() {
           <Stack.Screen
             name="OTP"
             component={Otp}
+          />
+
+          <Stack.Screen
+            name="PurchaseHistory"
+            component={PurchaseHistory}
+          />
+          <Stack.Screen
+            name="Mypayment"
+            component={Mypayment}
+          />
+          <Stack.Screen
+            name="AddCard"
+            component={AddCard}
+          />
+          <Stack.Screen
+            name="Checkout"
+            component={Checkout}
+          />
+          <Stack.Screen
+            name="Success"
+            component={Success}
           />
           {/* <Stack.Screen name="OrderCompleted" component={OrderCompleted} /> */}
         </Stack.Navigator>
